@@ -43,8 +43,8 @@ for i in sorted(os.listdir(drbase+drin)):
         with open(drbase+drout+'statistics_total.txt', 'a') as o:
             print(total_datanum,'mean',total_mean_value,'var',total_var_value,'std',total_std_value,'mas',total_max_value,'min',total_min_value, file=o)
             for obs in ocode:
-                fo=f.loc[f[:,1] == obs]
-                #fo=f[f['측정소코드']].isin(obs)
+                #fo=f.loc[f[:,1] == obs]
+                fo=f[f['측정소코드']].isin(obs)
                 o_datanum = len(fo)
                 if o_datanum != 0:
                     o_mean_value = fo.mean().reshape(1,11)
