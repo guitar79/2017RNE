@@ -1,0 +1,59 @@
+
+
+%\maketitle  % command to print the title page with above variables
+\makecover   % command to print the title page with above variables
+
+
+\pagenumbering{roman}                        % 로마자 페이지 시작
+\setcounter{page}{1}
+%---------------------------------------------------------------------
+%                  영문 초록을 입력하시오
+%---------------------------------------------------------------------
+%\begin{abstracts}     %this creates the heading for the abstract page
+%	\addcontentsline{toc}{section}{Abstract}  %%% TOC에 표시
+%	\noindent{
+%		Put your abstract here. 
+%	}
+%\end{abstracts}
+%
+%---------------------------------------------------------------------
+%                  국문 초록을 입력하시오
+%---------------------------------------------------------------------
+%\begin{abstractskor}        %this creates the heading for the abstract page
+%	\addcontentsline{toc}{section}{초록}  %%% TOC에 표시
+%	\noindent{
+%		초록
+%	}
+%\end{abstractskor}
+
+
+%----------------------------------------------
+%   Table of Contents (자동 작성됨)
+%----------------------------------------------
+\cleardoublepage
+\addcontentsline{toc}{section}{Contents}
+\setcounter{secnumdepth}{3} % organisational level that receives a numbers
+\setcounter{tocdepth}{3}    % print table of contents for level 3
+\baselineskip=2.2em
+\tableofcontents
+
+
+%----------------------------------------------
+%     List of Figures/Tables (자동 작성됨)
+%----------------------------------------------
+\cleardoublepage
+\clearpage
+\listoftables
+% 표 목록과 캡션을 출력한다. 만약 논문에 표가 없다면 이 위 줄의 맨 앞에 
+% `%' 기호를 넣어서 주석 처리한다.
+
+\cleardoublepage
+\clearpage
+\listoffigures
+% 그림 목록과 캡션을 출력한다. 만약 논문에 그림이 없다면 이 위 줄의 맨 앞에 
+% `%' 기호를 넣어서 주석 처리한다.
+
+\cleardoublepage
+\clearpage
+\renewcommand{\thepage}{\arabic{page}}
+\setcounter{page}{1}
