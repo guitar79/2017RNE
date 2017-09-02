@@ -93,10 +93,13 @@ for obs1 in sorted(ocode):
 			o_std_value = array2string(fo.std().values.reshape(1,11))
 			o_max_value = array2string(fo.max().values.reshape(1,11))
 			o_min_value = array2string(fo.min().values.reshape(1,11))
-	        #obss = str(obs)
+            #print data
+			output = ''
+			output += str(obs2)+','+o_mean_value+'\n'
+			output += str(obs2)+','+o_var_value+'\n'
+			output += str(obs2)+','+o_std_value+'\n'
+			output += str(obs2)+','+o_max_value+'\n'
+			output += str(obs2)+','+o_min_value
+            #obss = str(obs)
 			with open(('%s%sstatistics_%s.csv' % (drbase,drout,str(obs1))), 'a') as o:
-				print(obs2, ',', o_mean_value, file=o)
-				print(obs2, ',', o_var_value, file=o)
-				print(obs2, ',', o_std_value, file=o)
-				print(obs2, ',', o_max_value, file=o)
-				print(obs2, ',', o_min_value, file=o)
+				print(output, file=o)
