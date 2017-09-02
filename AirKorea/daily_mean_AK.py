@@ -80,24 +80,22 @@ odate = list(set(np.array(f.ix[:,'측정일시'])//100))
 for obs1 in sorted(ocode):
 	my_file = Path(drbase+drout+'statistics_'+str(obs1)+'.csv')
 	if my_file.is_file(): # csv file already exists in my folder
-		print ('File exists 'drbase+drout+'statistics_'+str(obs1)+'.csv')
+		print ('File exists  %s%sstatistics_%s.csv' % (drbase,drout,str(obs1)))
 	else:
 		with open(drbase+drout+'statistics_'+str(obs1)+'.csv', 'a') as o:
-    	    print('day,Region,RegionCode,RegionName,ObservTime,SO2',',', 'CO',',', 'O3',',', 'NO2',',', 'PM10',',', 'PM25',',', 'Address',file=o)
-	    for obs2 in sorted(odate):
-    	    fo=f.loc[date(obs2*100+1,obs2*100+25) & place(obs1)]
-	        #fo=f[f['측정소코드']].isin(obs)
-    	    o_mean_value = array2string(fo.mean().values.reshape(1,11))
-	   	    o_var_value = array2string(fo.var().values.reshape(1,11))
-	        o_std_value = array2string(fo.std().values.reshape(1,11))
-	        o_max_value = array2string(fo.max().values.reshape(1,11))
-	        o_min_value = array2string(fo.min().values.reshape(1,11))
+			print('day,Region,RegionCode,RegionName,ObservTime,SO2,CO,O3,NO2,PM10,PM25,Address',file=o)
+		for obs2 in sorted(odate):
+			fo=f.loc[date(obs2*100+1,obs2*100+25) & place(obs1)]
+			#fo=f[f['측정소코드']].isin(obs)
+			o_mean_value = array2string(fo.mean().values.reshape(1,11))
+			o_var_value = array2string(fo.var().values.reshape(1,11))
+			o_std_value = array2string(fo.std().values.reshape(1,11))
+			o_max_value = array2string(fo.max().values.reshape(1,11))
+			o_min_value = array2string(fo.min().values.reshape(1,11))
 	        #obss = str(obs)
-	        with open(drbase+drout+'statistics_'+str(obs1)+'.csv', 'a') as o:
-	            print(obs2, ',', o_mean_value, file=o)
-            	print(obs2, ',', o_var_value, file=o)
-	            print(obs2, ',', o_std_value, file=o)
-	            print(obs2, ',', o_max_value, file=o)
-	            print(obs2, ',', o_min_value, file=o)
-
-
+			with open(drbase+drout+'statistics_'+str(obs1)+'.csv', 'a') as o:
+				print(obs2, ',', o_mean_value, file=o)
+				print(obs2, ',,', o_var_value, file=o)
+				print(obs2, ',,', o_std_value, file=o)
+				print(obs2, ',', o_max_value, file=o)
+				print(obs2, ',', o_min_value, file=o)
