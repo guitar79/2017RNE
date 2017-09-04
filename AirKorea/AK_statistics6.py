@@ -36,8 +36,10 @@ for i in sorted(os.listdir(drbase+drin)):
 
         f = f.append(g,ignore_index=True)
         #count number of the total data 
+        
 f = f.drop(f.index[[0,1]])
 total_datanum = len(f)
+
 #statistics of total data
 total_mean_value = f.mean().values.reshape(1,11)
 total_var_value = f.var().values.reshape(1,11)
@@ -56,19 +58,20 @@ ocode = list(set(np.array(f.ix[:,'측정소코드'])))
 onumber = len(ocode)
 
 for obs in ocode:
-    #fo=f.loc[f[:,1] == obs]
-    fo=f[f['측정소코드']].isin(obs)
+    fo=f.loc[f['측정소코드'] == obs]
+    #fo=f[f['측정소코드']].isin(obs)
     o_datanum = len(fo)
     if o_datanum != 0:
-        o_mean_value = fo.mean().reshape(1,11)
-        o_var_value = fo.var().reshape(1,11)
-        o_std_value = fo.std().reshape(1,11)
-        o_max_value = fo.max().reshape(1,11)
-        o_min_value = fo.min().reshape(1,11)
-        with open(drbase+drout+'statistics_'+obs+'o.txt', 'w') as o:
+        o_mean_value = fo.mean().values.reshape(1,11)
+        o_var_value = fo.var().values.reshape(1,11)
+        o_std_value = fo.std().values.reshape(1,11)
+        o_max_value = fo.max().values.reshape(1,11)
+        o_min_value = fo.min().values.reshape(1,11)
+        obss = str(obs)
+        with open(drbase+drout+'statistics_'+obss+'o.csv', 'w') as o:
             print(i, obs, o_datanum, o_mean_value, o_var_value, o_std_value, o_max_value, o_min_value, file=o)
     else:
-        with open(drbase+drout+'statistics_'+obs+'o.txt', 'w') as o:
+        with open(drbase+drout+'statistics_'+obss+'o.csv', 'w') as o:
             print(i, obs, 'NaN', 'NaN', 'NaN', 'NaN', 'NaN', 'NaN', file=o)
 
 '''
