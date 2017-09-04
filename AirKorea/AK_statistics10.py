@@ -85,8 +85,8 @@ for obs1 in sorted(ocode):
         #obss = str(obs)
         with open(drbase+drout+'statistics_'+str(obs1)+'.csv', 'a') as o:
             print(obs2, ',', o_mean_value, file=o)
-            print(obs2, ',', o_var_value, file=o)
-            print(obs2, ',', o_std_value, file=o)
+            print(obs2, ',,', o_var_value, file=o)
+            print(obs2, ',,', o_std_value, file=o)
             print(obs2, ',', o_max_value, file=o)
             print(obs2, ',', o_min_value, file=o)
 
