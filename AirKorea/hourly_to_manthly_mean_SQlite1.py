@@ -1,7 +1,6 @@
-#place and date(1day)
-
 # -*- coding: utf-8 -*-
-# Auther guitar79@naver.com 
+# Auther guitar79@naver.com
+#
 
 import numpy as np
 from scipy import stats
@@ -19,12 +18,12 @@ drbase = '/media/guitar79/8T/RS_data/Remote_Sensing/2017RNE/airkorea/'
 drin = 'sqlite/'
 infile = 'AirKorea.db'
 #write directory(output data)
-drout = 'daily_mean1/'
-
-read_file = open(drbase+'observatory.csv','r')
-ocodes = read_file.read()
-ocodes = ocodes.split('\n')
-D=[0,31,28,31,30,31,30,31,31,30,31,30,31]
+drout = 'h_monthly_mean1/'
+prefix = 'h_monthly_mean'
+#read_file = open(drbase+'observatory.csv','r')
+#ocodes = read_file.read()
+#ocodes = ocodes.split('\n')
+#D=[0,31,28,31,30,31,30,31,31,30,31,30,31]
 
 if not os.path.exists(drbase+drout):
 	os.makedirs(drbase+drout)
@@ -38,36 +37,40 @@ def create_connection(db_file):
 		print(e)
 	return None
 
-def isNaN(num):
-    return num != num
-
 database = '%s%s%s' %(drbase, drin, infile)
 conn = create_connection(database)
 
 with conn:
-	for ocode in sorted(ocodes): #read from file
-    #for ocode in sorted(ocodes, reverse=True): #read from file
-    	#ocode = int(ocode)
-	#my_file = Path(drbase+drout+'statistics_'+ocode+'.csv')
-		my_file = Path('%s%sstatistics_%s.csv' %(drbase,drout,ocode))
+	ocodecur = conn.cursor()
+	ocodecur.execute("SELECT DISTINCT ocode FROM hourly")
+	ocodes = ocodecur.fetchall()
+	#cur.execute("SELECT DISTINCT ? FROM hourly", (ocode))
+	for ocode in sorted(ocodes): #read total obs code
+		#ocode = str(ocode[0])
+		ocode = ocode[0]
+		print(ocode)
+		my_file = Path('%s%s%s_%s.csv' %(drbase,drout,prefix,ocode))
 		if my_file.is_file(): # csv file already exists in my folder
-			print ('exist %s%sstatistics_%s.csv' %(drbase,drout,ocode))
+			print ('exist %s%s%s_%s.csv' %(drbase,drout,prefix,ocode))
 		else:
-			with open('%s%sstatistics_%s.csv'%(drbase,drout,ocode), 'a') as o:
-				print('day,Region,RegionCode,RegionName,var,SO2,CO,O3,NO2,PM10,PM25,Address',file=o)
+			with open('%s%s%s_%s.csv' %(drbase,drout,prefix,ocode), 'a') as o:
+				print('Month,Region,RegionCode,DataCount,var,SO2,CO,O3,NO2,PM10,PM25,Address',file=o)
 			for year in range(2014,2017):
 				for Mo in range(1,13):
-					for Da in range(1,D[Mo]+1):
-						day=year*10000+Mo*100+Da							
-						sdatetime = day*100
-						edatetime = day*100+100
-						ocode = int(ocode)
-						cur = conn.cursor()
-						cur.execute("SELECT * FROM hourly WHERE ocode=? and datetime>=? and datetime<?", (ocode,sdatetime,edatetime))
-						rows = cur.fetchall()
+					sdatetime = year*1000000+Mo*10000
+					edatetime = sdatetime+10000
+					month=sdatetime/10000
+					#ocode = str(ocode[0])
+					print(ocode)
+					cur = conn.cursor()
+					cur.execute("SELECT * FROM hourly WHERE ocode=? and datetime>=? and datetime<?", (ocode,sdatetime,edatetime))
+					rows = cur.fetchall()
+					if len(rows) == 0:
+						print('result is empty %s from %s to %S' %(ocode, sdatetime,edatetime))
+					else:
 						#print(rows)
 						rows = np.array(rows)
-						#print(rows)
+						print(rows)
 						#print(rows.shape)
 						#print(type(rows))
 						#s.sum(skipna=True)
@@ -112,10 +115,10 @@ with conn:
 						minNO2 = np.min(rows[:,7].astype(np.float))
 						minPM10 = np.min(rows[:,8].astype(np.float))
 						minPM25 = np.min(rows[:,9].astype(np.float))
-						with open('%s%sstatistics_%s.csv' %(drbase,drout,ocode), 'a') as o:
-							print('%s,,%s,,sum,%s,%s,%s,%s,%s,%s,' % (day,ocode,sumSO2,sumCO,sumO3,sumNO2,sumPM10,sumPM25), file=o)
-							print('%s,,%s,,mean,%s,%s,%s,%s,%s,%s,' % (day,ocode,meanSO2,meanCO,meanO3,meanNO2,meanPM10,meanPM25), file=o)
-							print('%s,,%s,,var,%s,%s,%s,%s,%s,%s,' % (day,ocode,varSO2,varCO,varO3,varNO2,varPM10,varPM25), file=o)
-							print('%s,,%s,,std,%s,%s,%s,%s,%s,%s,' % (day,ocode,stdSO2,stdCO,stdO3,stdNO2,stdPM10,stdPM25), file=o)
-							print('%s,,%s,,max,%s,%s,%s,%s,%s,%s,' % (day,ocode,maxSO2,maxCO,maxO3,maxNO2,maxPM10,maxPM25), file=o)
-							print('%s,,%s,,min,%s,%s,%s,%s,%s,%s,' % (day,ocode,minSO2,minCO,minO3,minNO2,minPM10,minPM25), file=o)
+						with open('%s%s%s_%s.csv' %(drbase,drout,prefix,ocode), 'a') as o:
+							print('%s,,%s,%s,sum,%s,%s,%s,%s,%s,%s,' % (month,ocode,len(rows),sumSO2,sumCO,sumO3,sumNO2,sumPM10,sumPM25), file=o)
+							print('%s,,%s,%s,mean,%s,%s,%s,%s,%s,%s,' % (month,ocode,len(rows),meanSO2,meanCO,meanO3,meanNO2,meanPM10,meanPM25), file	=o)
+							print('%s,,%s,%s,var,%s,%s,%s,%s,%s,%s,' % (month,ocode,len(rows),varSO2,varCO,varO3,varNO2,varPM10,varPM25), file=o)
+							print('%s,,%s,%s,std,%s,%s,%s,%s,%s,%s,' % (month,ocode,len(rows),stdSO2,stdCO,stdO3,stdNO2,stdPM10,stdPM25), file=o)
+							print('%s,,%s,%s,max,%s,%s,%s,%s,%s,%s,' % (month,ocode,len(rows),maxSO2,maxCO,maxO3,maxNO2,maxPM10,maxPM25), file=o)
+							print('%s,,%s,%s,min,%s,%s,%s,%s,%s,%s,' % (month,ocode,len(rows),minSO2,minCO,minO3,minNO2,minPM10,minPM25), file=o)

@@ -21,9 +21,9 @@ infile = 'AirKorea.db'
 #write directory(output data)
 drout = 'daily_mean1/'
 
-read_file = open(drbase+'observatory.csv','r')
-ocodes = read_file.read()
-ocodes = ocodes.split('\n')
+#read_file = open(drbase+'observatory.csv','r')
+#ocodes = read_file.read()
+#ocodes = ocodes.split('\n')
 D=[0,31,28,31,30,31,30,31,31,30,31,30,31]
 
 if not os.path.exists(drbase+drout):
@@ -38,17 +38,19 @@ def create_connection(db_file):
 		print(e)
 	return None
 
-def isNaN(num):
-    return num != num
-
 database = '%s%s%s' %(drbase, drin, infile)
 conn = create_connection(database)
 
 with conn:
+	ocodecur = conn.cursor()
+	ocodecur.execute("SELECT DISTINCT ocode FROM hourly")
+	ocodes = ocodecur.fetchall()
+	#cur.execute("SELECT DISTINCT ? FROM hourly", (ocode))
 	for ocode in sorted(ocodes): #read from file
-    #for ocode in sorted(ocodes, reverse=True): #read from file
-    	#ocode = int(ocode)
-	#my_file = Path(drbase+drout+'statistics_'+ocode+'.csv')
+		#for ocode in sorted(ocodes, reverse=True): #read from file
+		#ocode = int(ocode)
+		#my_file = Path(drbase+drout+'statistics_'+ocode+'.csv')
+		ocode = str(ocode[0])
 		my_file = Path('%s%sstatistics_%s.csv' %(drbase,drout,ocode))
 		if my_file.is_file(): # csv file already exists in my folder
 			print ('exist %s%sstatistics_%s.csv' %(drbase,drout,ocode))
@@ -61,7 +63,7 @@ with conn:
 						day=year*10000+Mo*100+Da							
 						sdatetime = day*100
 						edatetime = day*100+100
-						ocode = int(ocode)
+						ocode = str(ocode[0])
 						cur = conn.cursor()
 						cur.execute("SELECT * FROM hourly WHERE ocode=? and datetime>=? and datetime<?", (ocode,sdatetime,edatetime))
 						rows = cur.fetchall()

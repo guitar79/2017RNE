@@ -55,9 +55,9 @@ with conn:
 		else:
 			with open('%s%sstatistics_%s.csv'%(drbase,drout,ocode), 'a') as o:
 				print('day,Region,RegionCode,RegionName,var,SO2,CO,O3,NO2,PM10,PM25,Address',file=o)
-			for year in range(2014,2017):
-				for Mo in range(1,13):
-					for Da in range(1,D[Mo]+1):
+			for year in range(2016,2013,-1):
+				for Mo in range(12,0,-1):
+					for Da in range(D[Mo],0,-1):
 						day=year*10000+Mo*100+Da							
 						sdatetime = day*100
 						edatetime = day*100+100
