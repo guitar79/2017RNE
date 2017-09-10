@@ -66,7 +66,7 @@ with conn:
 					cur.execute("SELECT * FROM hourly WHERE ocode=? and datetime>=? and datetime<?", (ocode,sdatetime,edatetime))
 					rows = cur.fetchall()
 					if len(rows) == 0:
-						print('result is empty %s from %s to %S' %(ocode, sdatetime,edatetime))
+						print('result is empty %s from %s to %s' %(ocode, sdatetime,edatetime))
 					else:
 						#print(rows)
 						rows = np.array(rows)
