@@ -42,5 +42,5 @@ for tl in ax.w_xaxis.get_ticklabels(): # re-create what autofmt_xdate but with w
 
 ax.set_ylabel('Series')
 ax.set_zlabel('Amount')
-
+ptint(some_dates)
 plt.show()

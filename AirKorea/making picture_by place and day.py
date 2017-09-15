@@ -26,11 +26,13 @@ def array2string(x):
 #base directory
 drbase = '/media/guitar79/8T/RS_data/Remote_Sensing/2017RNE/airkorea/'
 #read directory(input data)
-drin = 'output/'
+drin = 'h_daily_mean1/'
 #write directory(output data)
-drout = 'output2/'
+drout = 'h_daily_chart1/'
 
-
+if not os.path.exists(drbase+drout):
+	os.makedirs(drbase+drout)
+    
 #read data files 
 for i in sorted(os.listdir(drbase+drin)):
     #read csv files
@@ -38,18 +40,29 @@ for i in sorted(os.listdir(drbase+drin)):
         #make data frame from reading csv files (like table)
         g = pd.read_csv(drbase+drin+i, encoding='euc_kr')
         #count number of the total data 
-        #ooo = np.array(g.ix[:,'PM10'])
-        ooo = g[" PM10 "].tolist()
+        print(g)
+        print('total number of data: %s' %(len(g)))
+        #
+        ooday = np.array(g.ix[:,'day'])
+        ooPM10 = np.array(g.ix[:,'PM10'])
+        #ooo = g["PM10"].tolist()
+        print(ooday)
+        print('total number of data: %s' %(len(ooday)))
+        print(ooPM10)
+        print('total number of data: %s' %(len(ooPM10)))
+        oday=[]
         oPM10=[]
         j=0
-        for j in range(0,len(ooo)):
-            if j%5==0:
-                oPM10.append(ooo[j])
+        for j in range(0,len(ooday)):
+            if j%5==1:
+                oday.append(ooday[j])
+                oPM10.append(ooPM10[j])
             j=j+1
-        e=[]
-        for j in range(1,182):
-            e.append(j)
-        plt.plot(e,oPM10)
+        print(oday)
+        print('total number of data: %s' %(len(oday)))
+        print(oPM10)
+        print('total number of data: %s' %(len(oPM10)))
+        plt.plot(oday,oPM10)
         plt.savefig(drbase+drout+i[-10:-4]+'-daily.png')
         plt.savefig(drbase+drout+i[-10:-4]+'-daily.pdf')
         plt.close()
