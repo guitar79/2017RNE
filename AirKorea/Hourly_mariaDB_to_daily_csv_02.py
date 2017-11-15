@@ -22,7 +22,7 @@ db_name = 'AirKorea'
 
 #base directory
 drbase = '/media/guitar79/8T/RS_data/Remote_Sensing/2017RNE/airkorea/'
-drout = 'daily_mean3/'
+drout = 'daily_mean4/'
 if not os.path.exists(drbase+drout):
     os.makedirs(drbase+drout)
 #db connect
