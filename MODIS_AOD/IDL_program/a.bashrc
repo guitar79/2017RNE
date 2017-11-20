@@ -138,5 +138,6 @@ unset TEXMFCONFIG
 
 export IDL_PATH=+/usr/local/harris/idl86
 export IDL_PATH=+/home/guitar79/IDL_lib:$IDL_PATH
+export IDL_PATH=+/home/guitar79/MODIS_READ/IDL_program/:$IDL_PATH
 #export IDL_PATH=+/home/guitar79/COMS_MI/src/:$IDL_PATH
 
