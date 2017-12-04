@@ -23,20 +23,31 @@ db_name = 'AirKorea'
 #base directory
 drbase = '/media/guitar79/8T/RS_data/Remote_Sensing/2017RNE/airkorea/'
 drout = 'daily_mean4/'
+#
 if not os.path.exists(drbase+drout):
     os.makedirs(drbase+drout)
+
 #db connect
 conn= pymysql.connect(host='localhost',user=db_user,password=db_pass,db=db_name,charset='utf8mb4',cursorclass=pymysql.cursors.DictCursor)
 
-#all ocode read!!
-ocodecur = conn.cursor()
-ocodecur.execute("SELECT DISTINCT ocode FROM hourly")
-ocodes = ocodecur.fetchall()
-#print(len(ocodes))
-res = []
-for i in range(len(ocodes)):
-    res.append(ocodes[i]['ocode'])
-ocodes=res
+
+##all ocode read!!
+##ocodecur = conn.cursor()
+##ocodecur.execute("SELECT DISTINCT ocode FROM hourly")
+##ocodes = ocodecur.fetchall()
+##print(len(ocodes))
+##res = []
+##for i in range(len(ocodes)):
+##    res.append(ocodes[i]['ocode'])
+##ocodes=res
+
+
+
+
+ocodes=[111111,111112]
+
+
+
 
 #ocodes = ocodes
 	#cur.execute("SELECT DISTINCT ? FROM hourly", (ocode))
