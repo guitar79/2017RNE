@@ -22,7 +22,7 @@ db_user = 'root'
 db_pass = 'rudrlrhkgkrrh'
 db_name = 'AirKorea_parks'
 tb_hourly = 'hourly_vc'
-tb_daily = 'daily_all_int'
+tb_daily = 'daily_all_vc'
 
 #base directory
 drbase = '/media/guitar79/8T/RS_data/Remote_Sensing/2017RNE/airkorea/'
@@ -57,7 +57,7 @@ def check_none(x):
 
 def Work(all_rows, ocode):
     pos = 0
-    for year in range(2014,2018):
+    for year in range(2014,2017):
         for Mo in range(1,13):
             for Da in range(1,D[Mo]+1):
                 day=year*10000+Mo*100+Da
@@ -77,7 +77,7 @@ def Work(all_rows, ocode):
                     for i in range(len(rows)):
                         new_rows.append(list(rows[i].values()))
                     rows = np.array(new_rows)
-                    print(rows)
+                    print(ocode, rows)
                     #print(rows.shape)
                     #print(type(rows))
                     #s.sum(skipna=True)
@@ -150,7 +150,7 @@ def Work(all_rows, ocode):
                         minSO2, minCO, minO3, minNO2, minPM10, minPM25,\
                         len(rows)))
                     ''' 
-                    cur.execute("INSERT INTO %s.%s\
+                    cur.execute("INSERT INTO '%s'.'%s'\
                         (`id`, `day`, `ocode`,\
                         `sumSO2`, `sumCO`, `sumO3`, `sumNO2`, `sumPM10`, `sumPM25`,\
                         `meanSO2`, `meanCO`, `meanO3`, `meanNO2`, `meanPM10`, `meanPM25`,\
@@ -159,14 +159,14 @@ def Work(all_rows, ocode):
                         `maxSO2`, `maxCO`, `maxO3`, `maxNO2`, `maxPM10`, `maxPM25`,\
                         `minSO2`, `minCO`, `minO3`, `minNO2`, `minPM10`, `minPM25`,\
                         `remark`)\
-                        VALUES (NULL, %s, %s,\
-                        %s, %s, %s, %s, %s, %s,\
-                        %s, %s, %s, %s, %s, %s,\
-                        %s, %s, %s, %s, %s, %s,\
-                        %s, %s, %s, %s, %s, %s,\
-                        %s, %s, %s, %s, %s, %s,\
-                        %s, %s, %s, %s, %s, %s,\
-                        %s);"\
+                        VALUES ('NULL', '%s', '%s',\
+                        '%s', '%s', '%s', '%s', '%s', '%s',\
+                        '%s', '%s', '%s', '%s', '%s', '%s',\
+                        '%s', '%s', '%s', '%s', '%s', '%s',\
+                        '%s', '%s', '%s', '%s', '%s', '%s',\
+                        '%s', '%s', '%s', '%s', '%s', '%s',\
+                        '%s', '%s', '%s', '%s', '%s', '%s',\
+                        '%s');"\
                         %(db_name, tb_daily, day, ocode,\
                         sumSO2, sumCO, sumO3, sumNO2, sumPM10, sumPM25,\
                         meanSO2, meanCO, meanO3, meanNO2, meanPM10, meanPM25,\
@@ -190,7 +190,7 @@ for i in range(len(ocodes)):
     cur.execute("SELECT * from %s where ocode=%s ORDER BY otime ASC" %(tb_hourly, ocode))
     all_data = cur.fetchall()
     data.append(all_data)
-    print(len(data[i]))
+    print(ocode, len(data[i]))
     
 for i in range(len(ocodes)):
     ocode = ocodes[i]
