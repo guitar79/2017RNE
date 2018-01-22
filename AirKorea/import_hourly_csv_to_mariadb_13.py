@@ -20,7 +20,7 @@ db_name = 'AirKorea'
 tb_name = 'hourly'
 
 #base directory
-drbase = '/media/guitar79/8T/RS_data/Remote_Sensing/2017RNE/airkorea/csv1/'
+drbase = '/media/guitar79/8T/RS_data/Remote_Sensing/2017RNE/airkorea/csv/'
 
 #db connect
 conn= pymysql.connect(host=db_host, user=db_user, password=db_pass, db=db_name,\
@@ -101,26 +101,26 @@ for i in sorted(os.listdir(drbase)):
         raw_lists = raw_lists.split('\n')
         for j in range(1,(len(raw_lists)-1)):
             #print(raw_lists[j])
-            row = raw_lists[j].split('|')
+            row = raw_lists[j].split(',')
             #print(row)
             for k in range(len(row)):
                 if len(row[k])==0 : row[k]=-9999
             print("INSERT INTO %s.%s\
                       (`Ocode`, `Otime`, `SO2`, `CO`, `O3`, `NO2`, `PM10`, `PM25`, `id`) \
                       VALUES (%s, '%s-%s-%s %s:00:00', %s, %s, %s, %s, %s, %s, NULL);"\
-                      %(db_name, tb_name, row[1], row[3][0:4], row[3][4:6], row[3][6:8], row[3][8:10],\
+                      %(db_name, tb_name, row[1], row[3][0:4], row[3][4:6], row[3][6:8],(int(row[3][8:10])-1),\
                         row[4], row[5], row[6], row[7], row[8], row[9]))
             output += "INSERT INTO %s.%s\
                       (`Ocode`, `Otime`, `SO2`, `CO`, `O3`, `NO2`, `PM10`, `PM25`, `id`) \
                       VALUES (%s, '%s-%s-%s %s:00:00', %s, %s, %s, %s, %s, %s, NULL);\n"\
-                      %(db_name, tb_name, row[1], row[3][0:4], row[3][4:6], row[3][6:8], row[3][8:10],\
+                      %(db_name, tb_name, row[1], row[3][0:4], row[3][4:6], row[3][6:8],(int(row[3][8:10])-1),\
                         row[4], row[5], row[6], row[7], row[8], row[9])
             print(i, j)
-            
+
             cur.execute("INSERT INTO %s.%s\
                       (`Ocode`, `Otime`, `SO2`, `CO`, `O3`, `NO2`, `PM10`, `PM25`, `id`) \
                       VALUES (%s, '%s-%s-%s %s:00:00', %s, %s, %s, %s, %s, %s, NULL);"\
-                      %(db_name, tb_name, row[1], row[3][0:4], row[3][4:6], row[3][6:8], row[3][8:10],\
+                      %(db_name, tb_name, row[1], row[3][0:4], row[3][4:6], row[3][6:8],(int(row[3][8:10])-1),\
                         row[4], row[5], row[6], row[7], row[8], row[9]))
             conn.commit()
         

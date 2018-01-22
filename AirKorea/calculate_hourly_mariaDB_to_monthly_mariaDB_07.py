@@ -15,8 +15,8 @@ from dateutil.relativedelta import relativedelta
 start_time=str(datetime.now())
 
 #mariaDB info
-db_host = '10.114.0.121'
-db_user = 'root'
+db_host = '10.114.0.126'
+db_user = 'modis'
 db_pass = 'rudrlrhkgkrrh'
 db_name = 'AirKorea'
 tb_hourly = 'hourly'
@@ -116,13 +116,14 @@ output = ''
 for ocode in ocodes:
     print("SELECT * from %s WHERE `Ocode` = %s ORDER BY `Otime` ASC" %(tb_hourly,ocode))
     cur.execute("SELECT * from %s WHERE `Ocode` = %s ORDER BY `Otime` ASC" %(tb_hourly,ocode))
+    #cur.execute("SELECT `Ocode`, str(`Otime`), `SO2`, `CO`, `O3`, `NO2`, `PM10`, `PM25`, `id` from %s WHERE `Ocode` = %s ORDER BY `Otime` ASC" %(tb_hourly,ocode))
     ocode_rows = cur.fetchall()
     print(ocode,len(ocode_rows))
 
-    for year in range(2014,2017):
+    for Yr in range(2014,2017):
         
         for Mo in range(1,13):
-            sdatetime = datetime(year, Mo, 1,0,0,0)
+            sdatetime = datetime(Yr, Mo, 1,0,0,0)
             edatetime = sdatetime + relativedelta(months=+1)
             rows = []
             pos=0
